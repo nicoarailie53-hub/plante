@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f2e5">
+<title>Enciclopedia plantelor · Atlas Plante Medicinale &amp; Melifere</title>
+<style>
+:root{--sage:#7f9a6b;--sage-dark:#33513c;--sage-soft:#e5eddb;--cream:#f7f2e5;--paper:#fffdf6;--honey:#d8a62c;--honey-soft:#fbf0cc;--ink:#24352a;--muted:#6b7a6c;--line:#dfe4d3;--danger:#a4473b;--shadow:0 12px 32px rgba(45,70,48,.09);--radius:18px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--cream);background-image:radial-gradient(circle at 8% 0%,rgba(216,166,44,.10),transparent 32%),radial-gradient(circle at 92% 12%,rgba(127,154,107,.14),transparent 30%);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.28;background-image:linear-gradient(rgba(51,81,60,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(51,81,60,.035) 1px,transparent 1px);background-size:26px 26px;z-index:0}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:var(--sage-dark)}
+:focus-visible{outline:3px solid var(--honey);outline-offset:2px}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(247,242,229,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:15px;background:var(--sage-dark);display:grid;place-items:center;color:#fff;flex:0 0 auto;box-shadow:0 6px 14px rgba(51,81,60,.22)}
+.logo svg{width:24px;height:24px}
+.brand h1{font-family:Georgia,"Times New Roman",serif;font-size:1.06rem;margin:0;letter-spacing:.2px}
+.brand p{margin:2px 0 0;font-size:.72rem;color:var(--muted)}
+.topbar-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.badge-local{font-size:.7rem;color:var(--sage-dark);background:var(--sage-soft);border:1px solid #cbd9bf;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.btn{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:600;font-size:.86rem;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.18s ease;text-decoration:none}
+.btn:hover{transform:translateY(-1px);border-color:var(--sage);box-shadow:0 6px 14px rgba(51,81,60,.10)}
+.btn.primary{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff}
+.btn.small{padding:8px 11px;font-size:.78rem}
+.btn.outline{background:transparent}
+.btn.danger{border-color:#e3bcb6;color:var(--danger)}
+.text-btn{border:0;background:none;color:var(--sage-dark);font-size:.78rem;font-weight:700;padding:4px}
+.text-btn.danger{color:var(--danger)}
+main{max-width:1180px;margin:0 auto;padding:22px 18px 0;position:relative;z-index:1}
+.view{display:none;animation:fade .22s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{padding:18px 20px;border-radius:24px;background:linear-gradient(125deg,#33513c,#52734d);color:#f7f6ea;box-shadow:var(--shadow);margin-bottom:18px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:240px;height:240px;border:36px solid rgba(216,166,44,.16);border-radius:50%;right:-70px;top:-100px}
+.hero h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.4rem,4vw,2.1rem);margin:0 0 6px}
+.hero p{margin:0;max-width:640px;color:#e5edd9;font-size:.9rem;line-height:1.5}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hero-stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:7px 11px;border-radius:999px;font-size:.75rem}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.search-wrap{position:relative;margin-bottom:12px}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:2}
+.search-wrap input{width:100%;padding:13px 14px 13px 42px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:.92rem}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+.filters label{flex:0 0 auto}
+.filters input{position:absolute;opacity:0;width:0;height:0}
+.filters span{display:block;white-space:nowrap;border:1px solid var(--line);background:#fff;padding:8px 13px;border-radius:999px;font-size:.8rem;font-weight:600;color:var(--muted)}
+.filters input:checked+span{background:var(--sage-dark);border-color:var(--sage-dark);color:#fff}
+.filters input:focus-visible+span{outline:3px solid var(--honey);outline-offset:2px}
+.result-line{font-size:.78rem;color:var(--muted);margin:10px 2px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px}
+.plant-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px;transition:.18s ease}
+.plant-card:hover{transform:translateY(-3px);border-color:var(--sage)}
+.card-top{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:.68rem;font-weight:700;padding:5px 9px;border-radius:999px;letter-spacing:.2px;border:1px solid transparent}
+.pill.medicinale{background:#e4eddd;color:#2f5537;border-color:#cbdcbf}
+.pill.melifere{background:var(--honey-soft);color:#775713;border-color:#ecdbab}
+.pill.ambele{background:#edf0d8;color:#4d5e25;border-color:#d8dfb3}
+.pill.fav{background:#f9e6cf;color:#8c5714;border-color:#edcfae}
+.plant-card h3{font-family:Georgia,"Times New Roman",serif;font-size:1.16rem;margin:0}
+.latin{font-style:italic;color:var(--sage-dark);font-size:.83rem;margin:0}
+.fr{color:var(--muted);font-size:.75rem;margin:0}
+.meta{display:grid;gap:4px;background:#f6f5ea;border-radius:12px;padding:9px 10px;font-size:.76rem;color:#4d5f50}
+.meta b{color:var(--sage-dark)}
+.card-desc{font-size:.82rem;line-height:1.5;margin:0;color:#4e5d51}
+.card-actions{margin-top:auto;display:flex;gap:8px;align-items:center;padding-top:4px}
+.icon-btn{margin-left:auto;width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:#fff;color:#a9a899;font-size:1.1rem;line-height:1}
+.icon-btn.on{color:#d39a19;background:var(--honey-soft);border-color:#ecd693}
+.empty{text-align:center;padding:38px 16px;color:var(--muted);font-size:.88rem}
+.empty strong{display:block;color:var(--ink);font-family:Georgia,serif;font-size:1.05rem;margin-bottom:6px}
+.notice{font-size:.76rem;color:var(--muted);background:var(--honey-soft);border:1px solid #eddcaa;border-radius:12px;padding:10px 12px;margin-top:14px;line-height:1.45}
+.recipe-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.recipe-group{margin-bottom:16px}
+.recipe-group h3{font-family:Georgia,serif;font-size:1.12rem;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.recipe-group h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--honey);box-shadow:0 0 0 4px var(--honey-soft)}
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.recipe-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.recipe-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.recipe-head h4{margin:0;font-size:.96rem;font-family:Georgia,serif}
+.recipe-head p{margin:3px 0 0;font-size:.73rem;color:var(--muted)}
+.scale-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 8px;background:#f5f5e9;border-radius:11px;padding:8px 10px}
+.scale-row label{font-size:.76rem;font-weight:700;color:var(--sage-dark)}
+.scale-row input{width:82px;padding:7px 8px;border:1px solid var(--line);border-radius:9px;text-align:center;background:#fff}
+.ingredients{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.ingredients li{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;padding:5px 0;border-bottom:1px dashed #e6e8dc}
+.ingredients li:last-child{border-bottom:0}
+.ingredients strong{color:var(--sage-dark);white-space:nowrap}
+.recipe-card details{margin:10px 0;font-size:.8rem;color:#4e5d51}
+.recipe-card summary{cursor:pointer;font-weight:700;color:var(--sage-dark)}
+.recipe-card details p{line-height:1.5;margin:8px 0 0}
+.warn{color:var(--danger)!important;background:#fbefec;border-radius:9px;padding:8px 10px}
+.side-card{position:sticky;top:84px}
+.side-card h3{font-family:Georgia,serif;margin:0 0 4px;font-size:1.1rem}
+.side-card>p{font-size:.78rem;color:var(--muted);margin:0 0 12px;line-height:1.45}
+.field{display:grid;gap:5px;margin-bottom:10px}
+.field label{font-size:.76rem;font-weight:700;color:var(--sage-dark)}
+.field input,.field select,.field textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);font-size:.85rem}
+.field textarea{min-height:88px;resize:vertical;line-height:1.45}
+.field small{color:var(--muted);font-size:.7rem;line-height:1.4}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.form-grid .full{grid-column:1/-1}
+.month-chips{display:flex;gap:7px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.month-chip{flex:0 0 auto;min-width:62px;border:1px solid var(--line);background:#fff;border-radius:13px;padding:9px 11px;font-size:.79rem;font-weight:700;color:var(--muted)}
+.month-chip.active{background:var(--honey);border-color:var(--honey);color:#3b2d08;box-shadow:0 6px 14px rgba(216,166,44,.25)}
+.calendar-title{font-family:Georgia,serif;font-size:1.3rem;margin:4px 0 14px}
+.calendar-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.calendar-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.calendar-card h3{margin:0 0 10px;font-size:.98rem;font-family:Georgia,serif;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--sage)}
+.dot.honey-dot{background:var(--honey)}
+.plant-tags{display:flex;flex-wrap:wrap;gap:7px}
+.plant-tag{font-size:.76rem;padding:7px 10px;border-radius:10px;background:var(--sage-soft);color:#2f5537;border:1px solid #cfdcc3}
+.plant-tag.honey-tag{background:var(--honey-soft);border-color:#ecd693;color:#775713}
+.tip-box{margin-top:14px;border-left:4px solid var(--honey);background:#fffaf0;padding:12px 14px;border-radius:0 12px 12px 0;font-size:.83rem;line-height:1.5}
+.tip-box strong{color:var(--sage-dark)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.toolbar input,.toolbar select{padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:.82rem}
+.toolbar input[type=search]{flex:1;min-width:180px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.stat b{display:block;font-family:Georgia,serif;font-size:1.4rem;color:var(--sage-dark)}
+.stat span{font-size:.73rem;color:var(--muted)}
+.entry-list{display:grid;gap:10px}
+.entry{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:13px 15px;display:grid;grid-template-columns:1fr auto;gap:8px 14px;box-shadow:var(--shadow)}
+.entry-main h4{margin:0;font-family:Georgia,serif;font-size:.98rem}
+.entry-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.entry-meta span{font-size:.72rem;background:#f2f3e9;border-radius:8px;padding:4px 8px;color:#4d5f50}
+.entry-note{grid-column:1/-1;font-size:.78rem;color:var(--muted);line-height:1.45;margin:0}
+.entry-actions{display:flex;gap:6px;align-items:flex-start}
+.backup-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,253,246,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.nav-btn{border:0;background:transparent;color:var(--muted);border-radius:14px;padding:7px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.67rem;font-weight:700;min-height:54px;transition:.18s ease}
+.nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active{background:var(--sage-soft);color:var(--sage-dark)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(25,38,28,.52);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:14px}
+.modal-panel{background:var(--paper);border-radius:22px;width:min(780px,100%);max-height:88vh;overflow:auto;box-shadow:0 24px 60px rgba(20,35,24,.28)}
+.modal-head{padding:20px 22px;background:linear-gradient(125deg,#33513c,#6c8c5f);color:#fff;position:relative}
+.modal-head h2{font-family:Georgia,serif;margin:8px 0 2px;font-size:1.45rem}
+.modal-head .latin{color:#e8efdc}
+.modal-head .fr{color:#dbe6d0}
+.close{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.14);color:#fff;font-size:1.2rem;line-height:1}
+.modal-body{padding:18px 22px 24px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.modal-grid section{background:#f8f7ed;border:1px solid var(--line);border-radius:14px;padding:14px}
+.modal-grid section.honey-box{grid-column:1/-1;background:var(--honey-soft);border-color:#eddca6}
+.modal-grid h3{font-family:Georgia,serif;font-size:1rem;margin:0 0 8px;color:var(--sage-dark)}
+.modal-grid h3:not(:first-child){margin-top:14px}
+.modal-grid p{font-size:.84rem;line-height:1.55;margin:0 0 8px}
+.modal-grid dl{margin:0;display:grid;gap:7px;font-size:.82rem}
+.modal-grid dt{font-weight:700;color:var(--sage-dark)}
+.modal-grid dd{margin:1px 0 0;color:#4d5d50}
+.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--sage-dark);color:#fff;padding:11px 16px;border-radius:12px;font-size:.82rem;z-index:60;box-shadow:0 10px 24px rgba(20,35,24,.28);max-width:min(92vw,460px);text-align:center}
+@media(min-width:900px){.bottom-nav{left:50%;right:auto;width:min(1180px,calc(100% - 32px));bottom:16px;transform:translateX(-50%);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 30px rgba(45,70,48,.14);padding:8px}.nav-btn{flex-direction:row;gap:8px;font-size:.78rem;padding:10px 14px;min-height:44px}}
+@media(max-width:820px){.recipe-layout{grid-template-columns:1fr}.side-card{position:static}.calendar-grid{grid-template-columns:1fr}.modal-grid{grid-template-columns:1fr}.modal-grid section.honey-box{grid-column:auto}}
+@media(max-width:560px){.topbar-inner{padding:10px 12px}.logo{width:38px;height:38px;border-radius:12px}.brand h1{font-size:.92rem}.badge-local{display:none}.btn .label-desktop{display:none}main{padding:16px 12px 0}.hero{padding:16px}.panel{padding:13px}.form-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.recipe-grid{grid-template-columns:1fr}.nav-btn svg{width:19px;height:19px}.entry{grid-template-columns:1fr}.entry-actions{margin-top:2px}.modal{padding:0;align-items:flex-end}.modal-panel{max-height:92vh;border-radius:20px 20px 0 0}}
+@media print{.bottom-nav,.topbar-actions,.toast,.search-wrap,.filters,.toolbar,.backup-row{display:none!important}body{background:#fff}.view{display:block!important}.panel,.plant-card{box-shadow:none}.modal{position:static;background:none;padding:0}.modal-panel{max-height:none;box-shadow:none}}
+
+main{padding-bottom:100px}
+.full-details{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.full-details summary{cursor:pointer;font-weight:700;color:var(--sage-dark);font-size:.8rem}
+.full-details h4{font-family:Georgia,serif;font-size:.84rem;margin:12px 0 4px;color:var(--sage-dark)}
+.full-details p{font-size:.8rem;line-height:1.5;margin:0;color:#4e5d51}
+.honey-mini{margin-top:12px;background:var(--honey-soft);border:1px solid #eddca6;border-radius:12px;padding:10px 12px}
+.honey-mini dl{display:grid;gap:6px;margin:6px 0 0;font-size:.78rem}
+.honey-mini dt{font-weight:700;color:#775713}
+.honey-mini dd{margin:1px 0 0;color:#4d5d50}
+.toolbar select{margin-left:auto}
+@media(max-width:560px){.toolbar select{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="topbar-inner">
+<div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+<div class="brand"><h1>Enciclopedia plantelor</h1><p>Atlas Plante Medicinale &amp; Melifere</p></div>
+<div class="topbar-actions"><a class="btn small" href="index.html">← Aplicația completă</a></div>
+</div>
+</header>
+<main>
+<section class="view active">
+<div class="hero">
+<h2>Fișele plantelor</h2>
+<p>Bază de date cu plante medicinale și melifere din Europa, Franța și România: denumiri în trei limbi, părți folosite, recoltare, beneficii, administrare, precauții și fișă apicolă.</p>
+<div class="hero-stats"><span class="hero-stat" id="countTop"></span><span class="hero-stat">Căutare după afecțiune</span><span class="hero-stat">Favorite salvate local</span></div>
+</div>
+<div class="panel">
+<div class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Caută: lavande, digestie, tuse, polen…" aria-label="Caută plante"></div>
+<div class="filters" role="group" aria-label="Filtru tip">
+<label><input type="radio" name="tip" value="toate" checked><span>Toate</span></label>
+<label><input type="radio" name="tip" value="medicinale"><span>Medicinale</span></label>
+<label><input type="radio" name="tip" value="melifere"><span>Melifere</span></label>
+<label><input type="radio" name="tip" value="ambele"><span>Ambele</span></label>
+</div>
+<div class="toolbar"><input id="dummy" type="search" hidden><select id="sort" aria-label="Ordonează"><option value="nume">Ordonează: nume A–Z</option><option value="inflorire">Ordonează: începutul înfloririi</option><option value="tip">Ordonează: tip</option></select><button class="btn small" id="printBtn" type="button">Tipărește fișele</button></div>
+<div class="result-line" id="count"></div>
+<div id="grid" class="grid"></div>
+<div id="empty" class="empty" hidden><strong>Nicio plantă găsită</strong>Modifică termenul de căutare sau filtrul.</div>
+<div class="notice">Informațiile sunt informative și nu înlocuiesc avizul medical. Producțiile de miere sunt estimări orientative, influențate de climă, sol și practicile apicole.</div>
+</div>
+</section>
+</main>
+<a class="btn" href="index.html" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:25;box-shadow:var(--shadow)">Deschide rețetarul, calendarul și jurnalul</a>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script>
+const LUNI=["Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie","Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie"];
+const LUNI_SCURT=["Ian","Feb","Mar","Apr","Mai","Iun","Iul","Aug","Sep","Oct","Nov","Dec"];
+const PLANTE=[
+{id:'tei',ro:'Tei',fr:'Tilleul',latin:'Tilia cordata / Tilia platyphyllos',familie:'Malvaceae',tip:'ambele',parte:'Flori și bractei',recolta:'Iunie – iulie',rand:[6,7],luni:[6,7],afectiuni:['răceală','febră','tuse','insomnie','stres','nervi'],beneficii:'Infuzia de flori cu bractei este folosită tradițional pentru efectul calmant, pentru somn liniștit și pentru îmblânzirea tusei în răceli ușoare.',mod:'1–2 lingurițe la 250 ml apă clocotită, infuzate 10 minute, de 2–3 ori pe zi.',prec:'Evită utilizarea îndelungată fără aviz medical în sarcină sau alăptare. Nu recolta din zone cu trafic intens.',miere:{kg:'500 – 1.000 kg/ha',polen:'Mediu',culoare:'Galben-deschis până la alb-auriu',proprietati:'Aromă intensă, parfum floral, gust dulce-agrumat; cristalizează fin.'}},
+{id:'salcam',ro:'Salcâm',fr:'Robinier faux acacia',latin:'Robinia pseudoacacia',familie:'Fabaceae',tip:'melifere',parte:'Flori (pentru uz apicol)',recolta:'Aprilie – mai',rand:[4,5],luni:[4,5],afectiuni:['miere','digestie','energie'],beneficii:'Una dintre cele mai importante surse de nectar din Europa. Mierea obținută este folosită ca îndulcitor blând și în rețete de siropuri.',mod:'Mierea se consumă diluată în ceaiuri sau în siropuri; preparatele din flori se folosesc doar cu precauție.',prec:'Scoarța, frunzele și semințele sunt toxice. Florile consumate în cantități mari pot provoca disconfort; mierea din sursă verificată este sigură.',miere:{kg:'800 – 1.500 kg/ha',polen:'Scăzut',culoare:'Galben-pai foarte deschis, aproape incolor',proprietati:'Miere monoflorală cu gust delicat, vanilat, cristalizează lent; foarte căutată.'}},
+{id:'lavanda',ro:'Lavandă',fr:'Lavande',latin:'Lavandula angustifolia',familie:'Lamiaceae',tip:'ambele',parte:'Vârfuri înflorite',recolta:'Iunie – iulie',rand:[6,7],luni:[6,7,8],afectiuni:['stres','insomnie','nervi','anxietate','pietre'],beneficii:'Uleiul și infuzia de lavandă sunt cunoscute pentru efectul relaxant și pentru susținerea somnului. Preparatele externe se folosesc în îngrijirea pielii.',mod:'Infuzie: 1 linguriță la 200 ml apă, seara. Ulei esențial: doar diluat, 1–2 picături, niciodată intern fără specialist.',prec:'Uleiul esențial pur nu se ingeră; evită în sarcină și la copii mici. Poate interacționa cu sedative.',miere:{kg:'150 – 300 kg/ha',polen:'Mediu',culoare:'Galben-auriu până la brun-deschis',proprietati:'Miere cu aromă florală pronunțată, note camforate și gust persistent; se cristalizează rapid.'}},
+{id:'papadie',ro:'Păpădie',fr:'Pissenlit',latin:'Taraxacum officinale',familie:'Asteraceae',tip:'ambele',parte:'Frunze, flori, rădăcină',recolta:'Martie – aprilie (flori și frunze), septembrie – octombrie (rădăcină)',rand:[3,4,9,10],luni:[3,4,5],afectiuni:['digestie','ficat','urinar','diuretic','vitamine'],beneficii:'Frunzele au efect diuretic tradițional, rădăcina susține digestia și funcția hepatică, iar florile sunt bogate în flavonoide.',mod:'Infuzie din 1–2 lingurițe de frunze sau rădăcină uscată la 250 ml apă, de 2 ori pe zi, cure scurte.',prec:'Evită în obstrucția căilor biliare sau în calculoză renală fără aviz medical. Nu confunda cu specii ornamentale.',miere:{kg:'20 – 50 kg/ha',polen:'Bogat',culoare:'Galben-închis, portocaliu',proprietati:'Miere timpurie, rar monoflorală, cu aromă ușor amărui-florală; polenul este important pentru hrana albinelor.'}},
+{id:'cimbrisor',ro:'Cimbrișor',fr:'Serpolet',latin:'Thymus serpyllum',familie:'Lamiaceae',tip:'ambele',parte:'Vârfuri înflorite și frunze',recolta:'Iunie – august',rand:[6,7,8],luni:[6,7,8,9],afectiuni:['răceală','tuse','gât','digestie','balonare'],beneficii:'Plantă aromatică cu acțiune tradițională împotriva tusei și a disconfortului respirator, utilă și în infuzii digestive.',mod:'Infuzie: 1 linguriță la 200 ml apă clocotită, 8–10 minute, de 2–3 ori pe zi.',prec:'Evită doze mari în sarcină. Uleiul esențial se folosește numai diluat corespunzător.',miere:{kg:'100 – 200 kg/ha',polen:'Bogat',culoare:'Galben-auriu',proprietati:'Miere aromatică, cu note de cimbru și miros de fân proaspăt; foarte apreciată de albine.'}},
+{id:'menta',ro:'Mentă',fr:'Menthe poivrée',latin:'Mentha piperita',familie:'Lamiaceae',tip:'ambele',parte:'Frunze',recolta:'Iunie – august',rand:[6,7,8],luni:[6,7,8,9],afectiuni:['digestie','balonare','greață','gât','răceală'],beneficii:'Infuzia de mentă este folosită pentru confort digestiv, reducerea balonării și senzația de prospețime în răceli.',mod:'1 linguriță de frunze uscate la 200 ml apă, infuzate 8 minute; nu se îndulcește cu miere fierbinte.',prec:'Evită în reflux gastroesofagian și în sarcină sau alăptare fără aviz medical. Uleiul de mentă nu se dă copiilor mici.',miere:{kg:'100 – 200 kg/ha',polen:'Mediu',culoare:'Galben-verzui până la galben-deschis',proprietati:'Miere cu aromă răcoritoare de mentol, gust dulce-mentolat; nectarul este accesibil albinelor.'}},
+{id:'sunatoare',ro:'Sunătoare',fr:'Millepertuis',latin:'Hypericum perforatum',familie:'Hypericaceae',tip:'ambele',parte:'Vârfuri înflorite',recolta:'Iunie – iulie',rand:[6,7],luni:[6,7,8],afectiuni:['nervi','stres','răni','inflamații'],beneficii:'Extractele de sunătoare sunt utilizate tradițional pentru susținerea stării de spirit, iar preparatele externe pentru îngrijirea pielii.',mod:'Infuzie: 1 linguriță la 250 ml apă, 10 minute. Uleiul macerat se aplică extern pe piele.',prec:'Interacționează cu multe medicamente (antidepresive, anticoagulante, contraceptive). Crește fotosensibilitatea; evită expunerea la soare.',miere:{kg:'100 – 300 kg/ha',polen:'Bogat',culoare:'Galben-chihlimbar',proprietati:'Miere parfumată, ușor rășinoasă; florile oferă polen abundent dar nectar moderat.'}},
+{id:'musetel',ro:'Mușețel',fr:'Camomille vraie',latin:'Matricaria chamomilla',familie:'Asteraceae',tip:'ambele',parte:'Inflorescențe',recolta:'Mai – iulie',rand:[5,6,7],luni:[5,6,7,8],afectiuni:['digestie','stomac','gât','răceală','copii','calmare'],beneficii:'Infuzia de mușețel este folosită pentru calmarea disconfortului digestiv, a iritațiilor din gât și pentru efectul ușor relaxant.',mod:'1–2 lingurițe de flori la 200 ml apă clocotită, acoperit 10 minute, de 2–3 ori pe zi.',prec:'Evită în alergie la Asteraceae (ambrozie, crizanteme). Consultă medicul în sarcină.',miere:{kg:'50 – 100 kg/ha',polen:'Mediu',culoare:'Galben-deschis',proprietati:'Miere delicată, cu aromă de mere și fân; florile mici sunt vizitate de albine și de alte insecte.'}},
+{id:'galbenele',ro:'Gălbenele',fr:'Souci',latin:'Calendula officinalis',familie:'Asteraceae',tip:'ambele',parte:'Flori',recolta:'Iunie – septembrie',rand:[6,7,8,9],luni:[4,5,6,7,8,9,10],afectiuni:['răni','piei','inflamații','gât','digestie'],beneficii:'Florile de gălbenele sunt folosite în preparate externe pentru îngrijirea pielii iritate și în infuzii blânde pentru gât și digestie.',mod:'Infuzie: 1 lingură la 250 ml apă, 10 minute. Uleiul macerat sau unguentul se aplică local de 2–3 ori pe zi.',prec:'Evită în alergie la Asteraceae. Nu aplica pe răni adânci sau infectate fără aviz medical.',miere:{kg:'30 – 80 kg/ha',polen:'Mediu',culoare:'Galben-portocaliu',proprietati:'Miere cu nuanță caldă, aromă ușor picant-florală; înflorirea lungă oferă polen continuu.'}},
+{id:'coada-soricelului',ro:'Coada-șoricelului',fr:'Millefeuille',latin:'Achillea millefolium',familie:'Asteraceae',tip:'ambele',parte:'Vârfuri înflorite și frunze',recolta:'Iunie – august',rand:[6,7,8],luni:[5,6,7,8,9],afectiuni:['răni','sângerări','digestie','inflamații'],beneficii:'Cunoscută în medicina tradițională pentru efectele hemostatice și antiinflamatorii locale, precum și pentru infuziile digestive.',mod:'Infuzie: 1 linguriță la 200 ml apă, 10 minute. Comprese cu infuzie răcită pe piele.',prec:'Evită în sarcină și în alergie la Asteraceae. Nu folosi îndelung fără aviz medical.',miere:{kg:'40 – 100 kg/ha',polen:'Mediu',culoare:'Galben-deschis până la auriu',proprietati:'Miere aromată, cu ușoară notă ierbos-balsamică; înflorește abundent pe pajiști.'}},
+{id:'salvie',ro:'Salvie',fr:'Sauge officinale',latin:'Salvia officinalis',familie:'Lamiaceae',tip:'ambele',parte:'Frunze',recolta:'Mai – iunie',rand:[5,6],luni:[5,6,7],afectiuni:['gât','transpirații','digestie','memorie','inflamații'],beneficii:'Infuzia de salvie se folosește tradițional pentru gât, pentru reglarea transpirațiilor și pentru efectele aromatice asupra digestiei.',mod:'1 linguriță la 200 ml apă, infuzie 10 minute, de 2 ori pe zi; gargarism cu infuzie răcită.',prec:'Evită doze mari și cure lungi în sarcină sau alăptare; conține tujonă. Nu se administrează copiilor mici.',miere:{kg:'100 – 200 kg/ha',polen:'Mediu',culoare:'Galben-auriu',proprietati:'Miere cu aromă ierbos-balsamică, ușor pământească; florile sunt bogate în nectar.'}},
+{id:'rozmarin',ro:'Rozmarin',fr:'Romarin',latin:'Salvia rosmarinus',familie:'Lamiaceae',tip:'ambele',parte:'Vârfuri și frunze',recolta:'Martie – mai',rand:[3,4,5],luni:[3,4,5,6],afectiuni:['memorie','digestie','circulație','stres','răceală'],beneficii:'Extractele de rozmarin sunt studiate pentru efectele asupra atenției și a circulației; infuzia susține digestia.',mod:'Infuzie: 1 linguriță la 200 ml apă, 10 minute. Uleiul esențial doar diluat, extern.',prec:'Uleiul esențial nu se ingeră; evită în sarcină, epilepsie și la copii. Poate interacționa cu anticoagulante.',miere:{kg:'200 – 500 kg/ha',polen:'Mediu',culoare:'Galben-auriu închis',proprietati:'Miere mediteraneană cu aromă de rășină și ierburi, gust ușor amărui; înflorire timpurie.'}},
+{id:'paducel',ro:'Păducel',fr:'Aubépine',latin:'Crataegus monogyna',familie:'Rosaceae',tip:'ambele',parte:'Flori și fructe',recolta:'Aprilie – mai (flori), septembrie – octombrie (fructe)',rand:[4,5,9,10],luni:[4,5,6],afectiuni:['inimă','circulație','nervi','somn','digestie'],beneficii:'Florile și fructele de păducel sunt folosite în fitoterapie pentru susținerea funcției cardiovasculare și pentru efectul calmant blând.',mod:'Infuzie din 1 linguriță de flori uscate la 200 ml apă, de 2 ori pe zi; extractele standardizate conform prospectului.',prec:'Nu întrerupe tratamentul cardiac prescris. Consultă medicul în sarcină și dacă iei medicamente pentru inimă.',miere:{kg:'50 – 150 kg/ha',polen:'Mediu',culoare:'Galben-roșcat',proprietati:'Miere cu aromă fructată, ușor astringentă; florile sunt importante mai ales ca sursă de polen.'}},
+{id:'urzica',ro:'Urzică',fr:'Ortie',latin:'Urtica dioica',familie:'Urticaceae',tip:'ambele',parte:'Frunze tinere și mature',recolta:'Aprilie – mai, iulie – august',rand:[4,5,7,8],luni:[5,6,7,8,9],afectiuni:['sânge','fier','urinar','alergie','piei','vitamine'],beneficii:'Frunzele de urzică sunt bogate în minerale și vitamine și sunt folosite tradițional în cure de primăvară și pentru susținerea sistemului urinar.',mod:'Infuzie: 1–2 lingurițe de frunze uscate la 250 ml apă, de 2 ori pe zi. Frunzele tinere se opăresc înainte de consum.',prec:'Recoltează cu mănuși. Evită în sarcină și dacă iei anticoagulante sau diuretice fără aviz medical.',miere:{kg:'50 – 150 kg/ha',polen:'Bogat',culoare:'Galben-verzui',proprietati:'Miere de urzică adesea din nectar și roua de miere, cu aromă ierboasă și gust mineral.'}},
+{id:'tatanasa',ro:'Tătăneasă',fr:'Consoude',latin:'Symphytum officinale',familie:'Boraginaceae',tip:'ambele',parte:'Frunze și rădăcină',recolta:'Aprilie – mai (frunze), septembrie – octombrie (rădăcină)',rand:[4,5,9,10],luni:[4,5,6],afectiuni:['răni','vânătăi','oase','inflamații','piei'],beneficii:'Cunoscută sub numele de consoude, tătăneasa este folosită extern în unguente pentru vânătăi și îngrijirea pielii.',mod:'Unguent sau cataplasmă din rădăcină sau frunze, aplicat local pe piele intactă, conform rețetei.',prec:'NU se utilizează intern: conține alcaloizi pirrolizidinici hepatotoxici. Nu se aplică pe răni deschise sau în sarcină.',miere:{kg:'100 – 200 kg/ha',polen:'Bogat',culoare:'Galben-brun',proprietati:'Miere cu aromă ierbos-dulce; florile tubulare sunt căutate de albine și de bondari.'}},
+{id:'facelia',ro:'Facelia',fr:'Phacélie',latin:'Phacelia tanacetifolia',familie:'Boraginaceae',tip:'melifere',parte:'Inflorescențe (cultivă meliferă)',recolta:'Iunie – august',rand:[6,7,8],luni:[5,6,7,8,9],afectiuni:['miere','albine','nectar'],beneficii:'Plantă meliferă de cultură, semănată special pentru hrana albinelor și pentru acoperirea solului.',mod:'Se cultivă în benzi florale lângă stupi; nu se folosește ca plantă medicinală de uz casnic.',prec:'Poate deveni invazivă în unele regiuni; controlează autosămânțarea și respectă rotația culturilor.',miere:{kg:'400 – 900 kg/ha',polen:'Bogat',culoare:'Galben-verzui până la auriu',proprietati:'Miere cu aromă delicată, ușor ierboasă; nectarul are concentrație ridicată de zaharuri.'}},
+{id:'rapita',ro:'Rapiță',fr:'Colza',latin:'Brassica napus',familie:'Brassicaceae',tip:'melifere',parte:'Flori (cultivă meliferă)',recolta:'Martie – mai',rand:[3,4,5],luni:[3,4,5],afectiuni:['miere','albine','nectar'],beneficii:'Cultură oleaginoasă cu înflorire masivă, foarte importantă pentru primele culesuri de miere din primăvară.',mod:'Se urmărește înflorirea culturilor din apropierea stupilor pentru amplasarea lor la câmp.',prec:'Mierea de rapiță cristalizează foarte repede; tratamentele agricole pot afecta albinele, deci informează-te despre cultură.',miere:{kg:'400 – 1.000 kg/ha',polen:'Bogat',culoare:'Galben-auriu până la alb-gălbui',proprietati:'Miere cu gust blând, ușor de unt, aromă de rapiță; cristalizare rapidă, textură cremoasă.'}},
+{id:'floarea-soarelui',ro:'Floarea-soarelui',fr:'Tournesol',latin:'Helianthus annuus',familie:'Asteraceae',tip:'melifere',parte:'Flori (cultivă meliferă)',recolta:'Iulie – septembrie',rand:[7,8,9],luni:[7,8,9],afectiuni:['miere','albine','nectar'],beneficii:'Cultură meliferă de vară, cu cules lung, utilă pentru completarea rezervelor de miere după secetă.',mod:'Se cultivă în apropierea stupilor; semințele se folosesc în alimentație, nu florile în scop medicinal casnic.',prec:'Hibrizii cu polen steril oferă mai puțin polen; alege soiuri prietenoase cu albinele.',miere:{kg:'300 – 700 kg/ha',polen:'Mediu',culoare:'Galben-auriu închis',proprietati:'Miere cu aromă de semințe prăjite, ușor rășinoasă, gust consistent; cristalizează grosier.'}},
+{id:'castan',ro:'Castan dulce',fr:'Châtaignier',latin:'Castanea sativa',familie:'Fagaceae',tip:'ambele',parte:'Flori, fructe și scoarță',recolta:'Mai – iunie (flori), septembrie – octombrie (fructe)',rand:[5,6,9,10],luni:[5,6],afectiuni:['miere','digestie','circulație'],beneficii:'Fructele sunt aliment energetic, iar extractele din scoarță se folosesc în fitoterapie pentru susținerea circulației venoase.',mod:'Mierea de castan se consumă ca atare; preparatele din scoarță numai conform prospectului produsului standardizat.',prec:'Nu confunda castanul dulce comestibil cu castanul sălbatic ornamental (Aesculus), care este toxic. Nu consuma fructe crude în cantitate mare.',miere:{kg:'500 – 1.500 kg/ha',polen:'Mediu',culoare:'Brun-auriu până la brun-închis',proprietati:'Miere corpolentă, astringentă, cu note de tanin și fructe; bogată în minerale, aromă persistentă.'}},
+{id:'iederă',ro:'Iederă',fr:'Lierre',latin:'Hedera helix',familie:'Araliaceae',tip:'ambele',parte:'Frunze (doar preparate standardizate)',recolta:'Septembrie – octombrie (frunze)',rand:[9,10],luni:[9,10,11],afectiuni:['tuse','răceală','gât','miere'],beneficii:'Extractele standardizate din frunze de iederă se folosesc în siropuri pentru tuse, datorită efectului expectorant.',mod:'Numai siropuri și extracte standardizate, conform prospectului. Mierea de iederă se consumă ca îndulcitor.',prec:'Planta proaspătă, fructele și preparatele nestandardizate sunt toxice. Evită în sarcină și la copii sub 2 ani.',miere:{kg:'200 – 500 kg/ha',polen:'Bogat',culoare:'Galben-auriu până la brun-deschis',proprietati:'Miere de toamnă cu aromă ușor picantă și note de ierburi; una dintre ultimele surse de nectar.'}},
+{id:'trifoi-alb',ro:'Trifoi alb',fr:'Trèfle blanc',latin:'Trifolium repens',familie:'Fabaceae',tip:'ambele',parte:'Inflorescențe',recolta:'Iunie – august',rand:[6,7,8],luni:[5,6,7,8,9],afectiuni:['digestie','gât','răceală','albine','miere'],beneficii:'Florile de trifoi alb se folosesc în infuzii blânde, iar planta este o sursă importantă de nectar pe pășuni.',mod:'Infuzie: 1 linguriță de flori uscate la 200 ml apă, 8 minute.',prec:'Evită consumul în cantități mari dacă iei anticoagulante; trifoiul poate influența coagularea.',miere:{kg:'100 – 300 kg/ha',polen:'Bogat',culoare:'Galben-deschis, aproape alb',proprietati:'Miere ușoară, cu aromă de fân și vanilie; cristalizează rapid, textură fină.'}},
+{id:'trifoi-rosu',ro:'Trifoi roșu',fr:'Trèfle rouge',latin:'Trifolium pratense',familie:'Fabaceae',tip:'ambele',parte:'Inflorescențe',recolta:'Iunie – august',rand:[6,7,8],luni:[5,6,7,8,9],afectiuni:['menopauză','piei','răceală','albine','miere'],beneficii:'Florile de trifoi roșu conțin izoflavone și sunt folosite tradițional pentru confortul din perioada menopauzei.',mod:'Infuzie: 1 linguriță la 200 ml apă, 10 minute; extractele standardizate conform prospectului.',prec:'Evită în sarcină, alăptare și în antecedente de cancer hormonal fără aviz medical. Poate interacționa cu anticoagulante.',miere:{kg:'80 – 200 kg/ha',polen:'Bogat',culoare:'Galben-auriu',proprietati:'Miere cu aromă ierbos-florală, ușor dulce; florile tubulare favorizează polenizarea de către albine.'}},
+{id:'pin',ro:'Pin',fr:'Pin sylvestre',latin:'Pinus sylvestris',familie:'Pinaceae',tip:'ambele',parte:'Muguri, rășină și ace',recolta:'Aprilie – mai (muguri)',rand:[4,5],luni:[4,5],afectiuni:['răceală','gât','respirație','rășină'],beneficii:'Mugurii și uleiul esențial de pin se folosesc în preparate respiratorii și în băi aromatice.',mod:'Infuzie de muguri: 1 linguriță la 250 ml apă, 10 minute. Uleiul esențial doar diluat, pentru inhalații.',prec:'Uleiul esențial nu se ingeră; evită în astm fără aviz medical și în sarcină. Poate irita pielea sensibilă.',miere:{kg:'50 – 200 kg/ha',polen:'Bogat',culoare:'Brun-auriu, uneori verzui',proprietati:'Miere de conifere, adesea din roua de miere, cu aromă rășinoasă și gust ușor amărui; miros de pădure.'}},
+{id:'brad',ro:'Brad',fr:'Épicéa',latin:'Picea abies',familie:'Pinaceae',tip:'ambele',parte:'Muguri și vârfuri tinere',recolta:'Aprilie – mai',rand:[4,5],luni:[4,5],afectiuni:['răceală','gât','respirație','siropuri'],beneficii:'Siropul de muguri de brad este cunoscut în bucătăria de munte și în remediile tradiționale pentru gât.',mod:'Sirop: muguri proaspeți fierți scurt cu zahăr sau miere; se păstrează la rece. Infuzie blândă din vârfuri.',prec:'Nu confunda cu alte conifere ornamentale. Uleiurile esențiale de conifere se folosesc doar diluat.',miere:{kg:'50 – 150 kg/ha',polen:'Bogat',culoare:'Brun-auriu',proprietati:'Miere de pădure, cu note rășinoase și de caramel, adesea din roua de miere a afidelor.'}},
+{id:'busuioc',ro:'Busuioc',fr:'Basilic',latin:'Ocimum basilicum',familie:'Lamiaceae',tip:'ambele',parte:'Frunze și vârfuri înflorite',recolta:'Iunie – august',rand:[6,7,8],luni:[6,7,8],afectiuni:['digestie','stres','gât','balonare'],beneficii:'Infuzia de busuioc este folosită pentru digestie și ca ceai aromatic relaxant; frunzele proaspete sunt utilizate în alimentație.',mod:'1 linguriță de frunze uscate sau 3–4 frunze proaspete la 200 ml apă, infuzate 8 minute.',prec:'Uleiul esențial se folosește doar diluat; evită doze mari în sarcină. Poate interacționa cu anticoagulante.',miere:{kg:'50 – 120 kg/ha',polen:'Mediu',culoare:'Galben-deschis',proprietati:'Miere aromatică, cu note de anason și ierburi proaspete; floarea este vizitată mai ales dimineața.'}},
+{id:'echinacea',ro:'Echinacea',fr:'Échinacée',latin:'Echinacea purpurea',familie:'Asteraceae',tip:'ambele',parte:'Părți aeriene și rădăcină',recolta:'Iulie – septembrie',rand:[7,8,9],luni:[6,7,8,9],afectiuni:['imunitate','răceală','gât','răni'],beneficii:'Extractele de echinacea sunt folosite în cure scurte pentru susținerea imunității în sezonul rece.',mod:'Infuzie sau extract standardizat conform prospectului; cure de maximum 8 săptămâni.',prec:'Evită în alergie la Asteraceae și în boli autoimune fără aviz medical; nu se recomandă în sarcină.',miere:{kg:'50 – 150 kg/ha',polen:'Bogat',culoare:'Galben-auriu',proprietati:'Miere florală cu aromă ierbos-condimentată; florile oferă polen abundent albinelor.'}},
+{id:'maces',ro:'Măceș',fr:'Églantier',latin:'Rosa canina',familie:'Rosaceae',tip:'ambele',parte:'Fructe și flori',recolta:'Mai – iunie (flori), septembrie – octombrie (fructe)',rand:[5,6,9,10],luni:[5,6],afectiuni:['vitamina c','imunitate','digestie','răceală'],beneficii:'Fructele de măceș sunt bogate în vitamina C și flavonoide și se folosesc în ceaiuri, siropuri și gemuri.',mod:'Infuzie: 1 lingură de fructe uscate și mărunțite la 250 ml apă, 10–15 minute; sirop diluat în apă.',prec:'Fructele proaspete pot irita stomacul dacă sunt consumate în cantitate mare; curăță bine de părul intern.',miere:{kg:'20 – 60 kg/ha',polen:'Mediu',culoare:'Galben-roz',proprietati:'Miere rară, cu aromă de trandafir sălbatic și ușoară aciditate; florile oferă mai ales polen.'}},
+{id:'cicoare',ro:'Cicoare',fr:'Chicorée',latin:'Cichorium intybus',familie:'Asteraceae',tip:'ambele',parte:'Rădăcină și flori',recolta:'Aprilie – mai (rădăcină), iunie – august (flori)',rand:[4,5,6,7,8],luni:[6,7,8,9],afectiuni:['digestie','ficat','fier','urinar'],beneficii:'Rădăcina de cicoare este folosită ca substitut al cafelei și pentru susținerea digestiei și a funcției hepatice.',mod:'Decoct: 1 linguriță de rădăcină mărunțită la 250 ml apă, fiert 5 minute, de 2 ori pe zi.',prec:'Evită în obstrucție biliară fără aviz medical; poate avea efect laxativ ușor.',miere:{kg:'20 – 80 kg/ha',polen:'Mediu',culoare:'Galben-deschis',proprietati:'Miere cu aromă ușor amărui-florală; florile albastre sunt atrăgătoare pentru albine în zilele secetoase.'}},
+{id:'coriandru',ro:'Coriandru',fr:'Coriandre',latin:'Coriandrum sativum',familie:'Apiaceae',tip:'ambele',parte:'Frunze și semințe',recolta:'Iunie – iulie (frunze), august – septembrie (semințe)',rand:[6,7,8,9],luni:[6,7],afectiuni:['digestie','balonare','stomac','condiment'],beneficii:'Semințele de coriandru sunt folosite în infuzii digestive, iar frunzele proaspete ca ierburi aromatice.',mod:'Infuzie: 1 linguriță de semințe zdrobite la 200 ml apă, 10 minute, după masă.',prec:'Consumul excesiv poate provoca disconfort digestiv; evită uleiul esențial în sarcină.',miere:{kg:'100 – 200 kg/ha',polen:'Mediu',culoare:'Galben-auriu',proprietati:'Miere cu aromă condimentată, ușor citrică, de culoare caldă; florile albe oferă nectar accesibil.'}}
+];
+const KEY="atlasplante.favorite.v1";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function readStore(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return []}}
+let favs=new Set(readStore());
+function writeStore(){try{localStorage.setItem(KEY,JSON.stringify([...favs]));return true}catch(e){return false}}
+function toast(msg){const el=$("#toast");el.textContent=msg;el.hidden=false;clearTimeout(window.tt);window.tt=setTimeout(()=>el.hidden=true,2800)}
+function tipLabel(t){return {medicinale:"Medicinală",melifere:"Meliferă",ambele:"Medicinală + meliferă"}[t]||t}
+function blooming(p){return p.luni.map(m=>LUNI_SCURT[m-1]).join(", ")}
+function card(p){
+  const fav=favs.has(p.id);
+  return '<article class="plant-card full-card"><div class="card-top"><span class="pill '+p.tip+'">'+tipLabel(p.tip)+'</span>'+(fav?'<span class="pill fav">Favorit</span>':'')+'</div>'
+    +'<h3>'+esc(p.ro)+'</h3><p class="latin">'+esc(p.latin)+'</p><p class="fr">'+esc(p.fr)+' · '+esc(p.familie)+'</p>'
+    +'<div class="meta"><span><b>Parte folosită:</b> '+esc(p.parte)+'</span><span><b>Recoltare:</b> '+esc(p.recolta)+'</span><span><b>Înflorire:</b> '+blooming(p)+'</span></div>'
+    +'<p class="card-desc">'+esc(p.beneficii)+'</p><div class="card-actions"><button class="btn small" data-detail="'+p.id+'">Vezi fișa</button>'
+    +'<button class="icon-btn '+(fav?"on":"")+'" data-fav="'+p.id+'" aria-label="Favorit" title="Favorit">★</button></div>'
+    +'<details class="full-details"><summary>Detalii complete</summary><h4>Beneficii terapeutice</h4><p>'+esc(p.beneficii)+'</p>'
+    +'<h4>Mod de administrare</h4><p>'+esc(p.mod)+'</p><h4>Precauții</h4><p class="warn">'+esc(p.prec)+'</p>'
+    +'<div class="honey-mini"><h4>Fișă apicolă</h4><dl><dt>Producție estimată</dt><dd>'+esc(p.miere.kg)+'</dd><dt>Aport de polen</dt><dd>'+esc(p.miere.polen)+'</dd>'
+    +'<dt>Culoarea mierii</dt><dd>'+esc(p.miere.culoare)+'</dd><dt>Proprietăți</dt><dd>'+esc(p.miere.proprietati)+'</dd>'
+    +'<dt>Perioada de înflorire</dt><dd>'+p.luni.map(m=>LUNI[m-1]).join(", ")+'</dd></dl></div></details></article>';
+}
+function render(){
+  const q=norm($("#q").value.trim());
+  const tip=$('input[name="tip"]:checked').value;
+  let list=PLANTE.filter(p=>{const hay=norm([p.ro,p.fr,p.latin,p.familie,p.parte,p.recolta,p.beneficii,p.mod,p.prec,p.afectiuni.join(" "),p.miere.proprietati,p.miere.culoare].join(" "));return (tip==="toate"||p.tip===tip)&&(!q||hay.includes(q))});
+  const sort=$("#sort").value;
+  if(sort==="nume")list=list.slice().sort((a,b)=>a.ro.localeCompare(b.ro,"ro"));
+  if(sort==="inflorire")list=list.slice().sort((a,b)=>a.luni[0]-b.luni[0]||a.ro.localeCompare(b.ro,"ro"));
+  if(sort==="tip")list=list.slice().sort((a,b)=>a.tip.localeCompare(b.tip)||a.ro.localeCompare(b.ro,"ro"));
+  $("#count").textContent=list.length+" din "+PLANTE.length+" plante afișate";
+  $("#empty").hidden=list.length>0;
+  $("#grid").innerHTML=list.map(card).join("");
+}
+function toggleFav(id){if(favs.has(id))favs.delete(id);else favs.add(id);writeStore();render();toast(favs.has(id)?"Adăugat la favorite.":"Eliminat din favorite.")}
+function openDetail(id){const p=PLANTE.find(x=>x.id===id);if(!p)return;const item=$('[data-detail="'+id+'"]');if(item){const d=item.closest("article").querySelector("details");d.open=true;d.scrollIntoView({behavior:"smooth",block:"center"})}}
+document.addEventListener("DOMContentLoaded",function(){
+  $("#q").addEventListener("input",render);
+  $("#sort").addEventListener("change",render);
+  $$('input[name="tip"]').forEach(r=>r.addEventListener("change",render));
+  $("#grid").addEventListener("click",e=>{const f=e.target.closest("[data-fav]");if(f)toggleFav(f.dataset.fav);const d=e.target.closest("[data-detail]");if(d)openDetail(d.dataset.detail)});
+  $("#printBtn").addEventListener("click",()=>window.print());
+  $("#countTop").textContent=PLANTE.length+" specii · 3 limbi · fișă apicolă completă";
+  render();
+});
+</script>
+</body>
+</html>
